@@ -66,7 +66,7 @@ public class Client {
 //        Ingresar.setWaitingConnection(false);
 //        Registro.setWaitingConnection(false);
         int jugadorWin = input.readInt();
-
+        
         if (jugadorWin != 0) {
 
             if (jugadorWin == 1) {
@@ -76,23 +76,9 @@ public class Client {
             }
 
         }
-
-        int jugadorWinSegundaVerificacion = input.readInt();
-
         Hexagon hexa = (Hexagon) input.readObject();
-
-        tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
-
-        if (jugadorWinSegundaVerificacion != 0) {
-
-            if (jugadorWinSegundaVerificacion == 1) {
-                JOptionPane.showMessageDialog(null, "Gano Jugador 1");
-            } else {
-                JOptionPane.showMessageDialog(null, "Gano Jugador 2");
-            }
-            continuar=false;
-        }
         //JOptionPane.showMessageDialog(null, hexa);
+        tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
 
         //JOptionPane.showMessageDialog(null, jugadorWin);
         tablero.habilitar();

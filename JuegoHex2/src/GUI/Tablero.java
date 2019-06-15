@@ -61,43 +61,32 @@ public class Tablero extends javax.swing.JFrame {
     }
 
     public void updateButtons(int indicadorJugador, int x, int y) {
-
+        int indiceJugadorVerification = 0;
         buttons[(x + 1)][(y + 1)].changeColor(indicadorJugador);
         Hexagon hexagon = new Hexagon(indicadorJugador, x, y);
         logic.verificationPredecessor(hexagon, indicadorJugador);
         if (indicadorJugador == 1) {
-            //indiceJugadorVerification = indicadorJugador;
+            indiceJugadorVerification = indicadorJugador;
             logic.addHexagonTreeJ1(hexagon);
             ++indicadorJugador;
 
         } else if (indicadorJugador == 2) {
-            // indiceJugadorVerification = indicadorJugador;
+            indiceJugadorVerification = indicadorJugador;
             logic.addHexagonTreeJ2(hexagon);
             --indicadorJugador;
 
         }
+        ObserverWinner.getInstance().verifyWinPlayer(indiceJugadorVerification);
 
-        ObserverWinner.getInstance().verifyWinPlayer(indicadorJugador);
+        if (ObserverWinner.getInstance().verifyFinishWin() != 0) {
 
-        try {
+            if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
 
-            connector.enviarJugadorWin(ObserverWinner.getInstance().verifyFinishWin());
+                JOptionPane.showMessageDialog(null, "Gano el jugador 1");
+            } else {
 
-            if (ObserverWinner.getInstance().verifyFinishWin() != 0) {
-
-                if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
-
-                    JOptionPane.showMessageDialog(null, "Gano el jugador 1");
-                } else {
-
-                    JOptionPane.showMessageDialog(null, "Gano el jugador 2");
-                }
+                JOptionPane.showMessageDialog(null, "Gano el jugador 2");
             }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
         }
 
         repaint();

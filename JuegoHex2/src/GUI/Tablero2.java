@@ -83,6 +83,7 @@ public class Tablero2 extends javax.swing.JFrame {
                 buttons[i][j].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        int indiceJugadorVerification = 0;
                         HexagonalButton clickedButton = (HexagonalButton) e.getSource();
                         Hexagon hexagon = new Hexagon(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
                         logic.verificationPredecessor(hexagon, indicadorJugador);
