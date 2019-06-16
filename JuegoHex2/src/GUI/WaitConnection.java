@@ -5,12 +5,33 @@
  */
 package GUI;
 
+import Sockets.Client;
+import Sockets.LogicThread;
+
 /**
  *
  * @author Kevin Trejos
  */
 public class WaitConnection extends javax.swing.JDialog {
 
+    private Client client;
+    private LogicThread thread;
+
+    public WaitConnection(Client client) {
+        initComponents();
+        this.client = client;
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        new WaitConnectionThread(this).start();
+    }
+
+    public WaitConnection(LogicThread thread) {
+        initComponents();
+        this.thread = thread;
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        new WaitConnectionThread(this).start();
+    }
+    
+    
     /**
      * Creates new form WaitConnection
      */
@@ -106,6 +127,23 @@ public class WaitConnection extends javax.swing.JDialog {
 //            }
 //        });
 //    }
+    public void mostrarVentana(){
+        this.setVisible(true);
+    }
+    
+    public void quiitarVentana(){
+        this.dispose();
+    }
+    
+    public void verificar(){
+        if (this.client.isWaiting() || this.thread.isWaiting()) {
+            this.dispose();
+            new Tablero(7, this.thread).setVisible(true);
+            new Tablero2(7, this.client).setVisible(true);
+            this.client.setWaiting(false);
+            this.thread.setWaiting(false);
+        }
+    }
     
     private class WaitConnectionThread extends Thread{
 
@@ -127,9 +165,9 @@ public class WaitConnection extends javax.swing.JDialog {
                     this.sleep(1000);
                     jLabel2.setText("Esperando jugador...");
                     this.sleep(1000);
-                    if (!Ingresar.isWaitingConnection() || !Registro.isWaitingConnection()) {
-                        wait.dispose();
-                    }
+//                    if (!Ingresar.isWaitingConnection() || !Registro.isWaitingConnection()) {
+//                        wait.dispose();
+//                    }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }

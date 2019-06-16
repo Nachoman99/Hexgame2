@@ -20,10 +20,12 @@ import javax.swing.JOptionPane;
  */
 public class Ingresar extends javax.swing.JDialog {
 
+    private static boolean tocaBoton = false;
     private static boolean iniciarEspera;
     ManejoProperties prop = new ManejoProperties();
     private static boolean waitingConnection = false;
     private static WaitConnection wait = new WaitConnection(null, true);
+    //private static boolean waitingConnection = false;
 //    private int sizeGame;
 
     /**
@@ -39,6 +41,16 @@ public class Ingresar extends javax.swing.JDialog {
         closeX();
     }
 
+    public static boolean isTocaBoton() {
+        return tocaBoton;
+    }
+
+    public static void setTocaBoton(boolean tocaBoton) {
+        Ingresar.tocaBoton = tocaBoton;
+    }
+
+    
+    
     public static boolean getIniciarEspera() {
         return iniciarEspera;
     }
@@ -156,12 +168,13 @@ public class Ingresar extends javax.swing.JDialog {
         } else {
             this.setVisible(false);
             iniciarEspera = true;
-            if (waitingConnection) {
-                wait.setVisible(true);
-                //waitingConnection = true;
-            } else if (!waitingConnection) {
-                wait.setVisible(false);
-            }
+            tocaBoton = true;
+//            if (waitingConnection) {
+//                wait.setVisible(true);
+//                //waitingConnection = true;
+//            } else if (!waitingConnection) {
+//                wait.setVisible(false);
+//            }
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
@@ -173,15 +186,15 @@ public class Ingresar extends javax.swing.JDialog {
         Ingresar.waitingConnection = waitingConnection;
     }
     
-    public static void windowWait(boolean window){
-        if (window) {
-            wait.setVisible(true);
-            waitingConnection = true;
-        } else {
-            waitingConnection = false;
-            wait.setVisible(false);
-        }
-    }
+//    public static void windowWait(boolean window){
+//        if (window) {
+//            wait.setVisible(true);
+//            waitingConnection = true;
+//        } else {
+//            waitingConnection = false;
+//            wait.setVisible(false);
+//        }
+//    }
     
 //    private void sizeTablero() {
 //        boolean continu = false;

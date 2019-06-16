@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
  */
 public class Registro extends javax.swing.JDialog {
 
+    private static boolean tocaBoton = false;
     private static boolean waitingConnection = false;
     private static boolean iniciarEspera = false;
     UserList list = new UserList();
@@ -47,6 +48,16 @@ public class Registro extends javax.swing.JDialog {
         closeX();
     }
 
+    public static boolean isTocaBoton() {
+        return tocaBoton;
+    }
+
+    public static void setTocaBoton(boolean tocaBoton) {
+        Registro.tocaBoton = tocaBoton;
+    }
+
+    
+    
     public static boolean getIniciarEspera() {
         return iniciarEspera;
     }
@@ -168,6 +179,7 @@ public class Registro extends javax.swing.JDialog {
                     prop.writerUser(user);
                     iniciarEspera=false;
                     this.dispose();
+                    tocaBoton = true;
                     if (waitingConnection) {
                         wait.setVisible(true);
                         //waitingConnection = true;

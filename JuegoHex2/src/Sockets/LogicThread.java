@@ -4,6 +4,7 @@ import GUI.Ingresar;
 import GUI.Registro;
 import GUI.Tablero;
 import GUI.VentanaPrincipal;
+import GUI.WaitConnection;
 import Logic.Hexagon;
 import java.awt.Point;
 import java.io.IOException;
@@ -22,8 +23,10 @@ public class LogicThread extends Thread {
     private Socket connection;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private Tablero tablero;
+    private Tablero tablero = new Tablero(7, this);
     private boolean continuar = true;
+    private WaitConnection wait = new WaitConnection(this);
+    private static boolean waiting = false;
 
     public LogicThread(Socket connection) {
         this.connection = connection;
@@ -31,14 +34,30 @@ public class LogicThread extends Thread {
 //        this.tablero.setVisible(true);
     }
 
+    public LogicThread() {
+    }
+
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    public void setWaiting(boolean waiting) {
+        this.waiting = waiting;
+    }
+    
     @Override
     public void run() {
         try {
-            Ingresar.setWaitingConnection(false);
-            Registro.setWaitingConnection(false);
+            new VentanaPrincipal().setVisible(true);
             getStreams();
-            mostrarTablero();
+            //mostrarTablero();
             while (continuar) {
+                while (!waiting) {                    
+                    mostrarVentana();
+                }
+                while (waiting) {                    
+                    wait.verificar();
+                }
                 recibir();
             }
         } catch (IOException e) {
@@ -50,12 +69,20 @@ public class LogicThread extends Thread {
         }
     }
 
+    private void mostrarVentana(){
+        if (Ingresar.isTocaBoton() || Registro.isTocaBoton()) {
+            wait.mostrarVentana();
+            waiting = true;
+        } else {
+            wait.dispose();
+            waiting = false;
+        }
+    }
+    
     private void getStreams() throws IOException {
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
         input = new ObjectInputStream(connection.getInputStream());
-        Ingresar.setWaitingConnection(false);
-        Registro.setWaitingConnection(false);
     }
 
     public synchronized void enviar(Hexagon hexa, int jugadorWin) throws IOException, ClassNotFoundException {

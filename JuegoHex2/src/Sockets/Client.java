@@ -9,6 +9,7 @@ import GUI.Ingresar;
 import GUI.Registro;
 import GUI.Tablero2;
 import GUI.VentanaPrincipal;
+import GUI.WaitConnection;
 import Logic.Hexagon;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,23 +29,33 @@ public class Client {
     private final String HOST = "127.0.0.1";
     private final int PORT = 12345;
     private VentanaPrincipal mainWindow;
-    private Tablero2 tablero;
+    private Tablero2 tablero = new Tablero2(7, this);
     private boolean continuar = true;
+    private WaitConnection wait = new WaitConnection(this);
+    private boolean waiting = false;
 
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    public void setWaiting(boolean waiting) {
+        this.waiting = waiting;
+    }
+    
     public void runClient() {
-//        this.mainWindow = new VentanaPrincipal();
-//            principal.setVisible(true);
-//            while(!Ingresar.getIniciarEspera()&&!Registro.getIniciarEspera()){
-////                System.out.println("ingresar= "+Ingresar.getIniciarEspera());
-////                 System.out.println("registro= "+Registro.getIniciarEspera());
-//            }
+        this.mainWindow = new VentanaPrincipal();
+        mainWindow.setVisible(true);
         try {
             connectToServer();
             getStreams();
-//            Ingresar.setWaitingConnection(false);
-//            Registro.setWaitingConnection(false);
             tablero.deshabilitar();
             while (continuar) {
+                while (!waiting) {                    
+                    mostrarWaiting();
+                }
+                while (waiting) {                    
+                    wait.verificar();
+                }
                 recibir();
             }
         } catch (IOException ex) {
@@ -56,6 +67,16 @@ public class Client {
         }
     }
 
+    private void mostrarWaiting(){
+        if (Ingresar.isTocaBoton() || Registro.isTocaBoton()) {
+            wait.mostrarVentana();
+            waiting = true;
+        } else {
+            wait.dispose();
+            waiting = false;
+        }
+    }
+    
     public synchronized void enviar(Hexagon hexa) throws IOException, ClassNotFoundException {
         output.writeObject(hexa);
         //output.writeBoolean(continuar);no se cooo mandarlo
@@ -63,8 +84,7 @@ public class Client {
     }
 
     private void recibir() throws IOException, ClassNotFoundException {
-//        Ingresar.setWaitingConnection(false);
-//        Registro.setWaitingConnection(false);
+        
         int jugadorWin = input.readInt();
         
         if (jugadorWin != 0) {
@@ -86,14 +106,10 @@ public class Client {
 
     private void connectToServer() throws IOException {
         System.out.println("Attempting connection\n");
-//        Ingresar.setWaitingConnection(false);
-//        Registro.setWaitingConnection(false);
         client = new Socket(HOST, PORT);
         System.out.println("Connected to: " + client.getInetAddress().getHostName());
-//        mainWindow = new VentanaPrincipal();
-//        mainWindow.setVisible(true);
-        tablero = new Tablero2(7, this);
-        tablero.setVisible(true);
+//        tablero = new Tablero2(7, this);
+//        tablero.setVisible(true);
     }
 
     private void getStreams() throws IOException {

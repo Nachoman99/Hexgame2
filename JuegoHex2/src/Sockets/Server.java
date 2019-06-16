@@ -23,10 +23,6 @@ public class Server {
     private ServerSocket server;
     private Socket connection;
     private final int PORT = 12345;
-    private VentanaPrincipal principal;
-    private WaitConnection wait;
-    private boolean ingresar = false;
-    private boolean registro = false;
 
     public void runServer() {
         try {
@@ -55,8 +51,6 @@ public class Server {
 
     private void waitForConnection() throws IOException {
         System.out.println("Waiting for connection...\n");
-        Ingresar.setWaitingConnection(false);
-        Registro.setWaitingConnection(false);
         connection = server.accept();
         System.out.println("Connection received from: " + connection.getInetAddress().getHostName());
 
