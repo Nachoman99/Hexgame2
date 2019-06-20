@@ -50,8 +50,6 @@ public class Ingresar extends javax.swing.JDialog {
         Ingresar.tocaBoton = tocaBoton;
     }
 
-    
-    
     public static boolean getIniciarEspera() {
         return iniciarEspera;
     }
@@ -164,20 +162,28 @@ public class Ingresar extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        if (!prop.verifyPassword(tfID.getText(), prop.encriptar2(Arrays.toString(tfPassword.getPassword())))) {
-            JOptionPane.showMessageDialog(null, "La contraseña o el nombre de usuario son incorrectos");
+
+        if (prop.archivoExiste()) {
+            if (!prop.verifyPassword(tfID.getText(), prop.encriptar2(Arrays.toString(tfPassword.getPassword())))) {
+                JOptionPane.showMessageDialog(null, "La contraseña o el nombre de usuario son incorrectos");
+            } else {
+                this.setVisible(false);
+                iniciarEspera = true;
+                tocaBoton = true;
+            }
         } else {
-            this.setVisible(false);
-            iniciarEspera = true;
-            tocaBoton = true;
-            
-//            if (waitingConnection) {
-//                wait.setVisible(true);
-//                //waitingConnection = true;
-//            } else if (!waitingConnection) {
-//                wait.setVisible(false);
-//            }
+            prop.crearArchivo();
+            if (!prop.verifyPassword(tfID.getText(), prop.encriptar2(Arrays.toString(tfPassword.getPassword())))) {
+                JOptionPane.showMessageDialog(null, "La contraseña o el nombre de usuario son incorrectos");
+            } else {
+                this.setVisible(false);
+                iniciarEspera = true;
+                tocaBoton = true;
+            }
         }
+
+        //}
+
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     public static boolean isWaitingConnection() {
@@ -187,7 +193,7 @@ public class Ingresar extends javax.swing.JDialog {
     public static void setWaitingConnection(boolean waitingConnection) {
         Ingresar.waitingConnection = waitingConnection;
     }
-    
+
 //    public static void windowWait(boolean window){
 //        if (window) {
 //            wait.setVisible(true);
@@ -197,7 +203,6 @@ public class Ingresar extends javax.swing.JDialog {
 //            wait.setVisible(false);
 //        }
 //    }
-    
 //    private void sizeTablero() {
 //        boolean continu = false;
 //        while (continu == false) {

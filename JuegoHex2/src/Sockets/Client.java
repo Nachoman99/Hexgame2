@@ -54,8 +54,8 @@ public class Client {
                 waiting = Registro.isTocaBoton();
             }
 //                wait.verificar();
-//                System.out.println(waiting);
-            notifyAll();
+                System.out.println(waiting);
+//            notifyAll();
         }
         try {
             connectToServer();
@@ -63,6 +63,7 @@ public class Client {
 //            tablero.deshabilitar();
             while (continuar) {
                 recibir();
+                System.out.println("Recibe cliente");
             }
         } catch (IOException ex) {
             ex.printStackTrace();

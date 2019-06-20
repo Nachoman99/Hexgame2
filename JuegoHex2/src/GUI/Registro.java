@@ -56,8 +56,6 @@ public class Registro extends javax.swing.JDialog {
         Registro.tocaBoton = tocaBoton;
     }
 
-    
-    
     public static boolean getIniciarEspera() {
         return iniciarEspera;
     }
@@ -159,7 +157,7 @@ public class Registro extends javax.swing.JDialog {
         this.dispose();
         principal.setVisible(true);
     }//GEN-LAST:event_btnAtrasActionPerformed
-                                           
+
     public static boolean isWaitingConnection() {
         return waitingConnection;
     }
@@ -167,34 +165,66 @@ public class Registro extends javax.swing.JDialog {
     public static void setWaitingConnection(boolean waitingConnection) {
         Registro.waitingConnection = waitingConnection;
     }
-    
+
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
-        verifyID();
-        verifyPassword();
-        if (ID != true && password != true) {
-            try {
-                if (!prop.containsUser(tfID.getText())) {
-                    Users userFactory = new UserFactory();
-                    User user = userFactory.createUser(tfID.getText(), Arrays.toString(tfContraseña.getPassword()));
-                    prop.writerUser(user);
-                    iniciarEspera=false;
-                    this.dispose();
-                    tocaBoton = true;
-                    if (waitingConnection) {
-                        wait.setVisible(true);
+        //prop.crearArchivo();
+        if (prop.archivoExiste()) {
+            verifyID();
+            verifyPassword();
+            if (ID != true && password != true) {
+                try {
+                    if (!prop.containsUser(tfID.getText())) {
+                        Users userFactory = new UserFactory();
+                        User user = userFactory.createUser(tfID.getText(), Arrays.toString(tfContraseña.getPassword()));
+                        prop.writerUser(user);
+                        iniciarEspera = false;
+                        this.dispose();
+                        tocaBoton = true;
+                        if (waitingConnection) {
+                            wait.setVisible(true);
 //                        waitingConnection = true;
-                    }else if (!waitingConnection) {
-                        wait.setVisible(false);
-                    }
-                    //sizeTablero();
+                        } else if (!waitingConnection) {
+                            wait.setVisible(false);
+                        }
+                        //sizeTablero();
 //                    new Tablero(7).setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "La id ya está en uso, por favor use otra");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "La id ya está en uso, por favor use otra");
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            }
+        } else {
+            prop.crearArchivo();
+            verifyID();
+            verifyPassword();
+            if (ID != true && password != true) {
+                try {
+                    if (!prop.containsUser(tfID.getText())) {
+                        Users userFactory = new UserFactory();
+                        User user = userFactory.createUser(tfID.getText(), Arrays.toString(tfContraseña.getPassword()));
+                        prop.writerUser(user);
+                        iniciarEspera = false;
+                        this.dispose();
+                        tocaBoton = true;
+                        if (waitingConnection) {
+                            wait.setVisible(true);
+//                        waitingConnection = true;
+                        } else if (!waitingConnection) {
+                            wait.setVisible(false);
+                        }
+                        //sizeTablero();
+//                    new Tablero(7).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "La id ya está en uso, por favor use otra");
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
+
     }//GEN-LAST:event_btnRegistroActionPerformed
 
 //    private void sizeTablero() {
@@ -238,8 +268,8 @@ public class Registro extends javax.swing.JDialog {
             ID = false;
         }
     }
-    
-    public static void windowWait(boolean window){
+
+    public static void windowWait(boolean window) {
         if (window) {
             wait.setVisible(true);
             waitingConnection = true;

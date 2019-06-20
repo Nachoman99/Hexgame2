@@ -15,13 +15,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  *
@@ -29,7 +22,6 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class ManejoProperties {
 
-    private static final String clave = "Juego Hex";
     private static Properties propertie = new Properties();
     private static FileOutputStream output;
     private static FileInputStream input;
@@ -50,7 +42,26 @@ public class ManejoProperties {
 //        }
 //    }
 
+    public boolean archivoExiste(){
+        try {
+            input = new FileInputStream("Users.properties");
+            return true;
+        } catch (FileNotFoundException ex) {
+            return false;
+        }
+    }
+    
+    public void crearArchivo() {
+        try {
+            output = new FileOutputStream("Users.properties");
+            input = new FileInputStream("Users.properties");
+        } catch (FileNotFoundException ex) {
+            System.out.println("EL archivo no se pudo crear");
+        }
+    }
+    
     public void writerUser(User user) throws FileNotFoundException, IOException {
+       // propertie = new Properties();
         output = new FileOutputStream("Users.properties");
         input = new FileInputStream("Users.properties");
         propertie.load(input);
@@ -59,7 +70,13 @@ public class ManejoProperties {
     }
 
     public boolean containsUser(String userName) throws FileNotFoundException, IOException {
-        input = new FileInputStream("Users.properties");
+        //propertie = new Properties();
+        try {
+            input = new FileInputStream("Users.properties");
+        } catch (FileNotFoundException e) {
+            output = new FileOutputStream("Users.properties");
+            input = new FileInputStream("Users.properties");
+        }
         propertie.load(input);
         if (propertie.getProperty(userName) != null) {
             return true;
@@ -68,7 +85,7 @@ public class ManejoProperties {
         }
     } 
     
-    public String encriptar2(String encript){
+    public String encriptar2(String encript) {
         try { 
             MessageDigest md = MessageDigest.getInstance("MD5"); 
             byte[] messageDigest = md.digest(encript.getBytes()); 
@@ -78,15 +95,20 @@ public class ManejoProperties {
                 hashtext = "0" + hashtext; 
             } 
             return hashtext; 
-        }  
-        catch (NoSuchAlgorithmException e) { 
+        }  catch (NoSuchAlgorithmException e) { 
             throw new RuntimeException(e); 
-        } 
+        }
+        
     }
 
     public boolean verifyPassword(String userName, String password) {
         try {
-            input = new FileInputStream("Users.properties");
+            try {
+                input = new FileInputStream("Users.properties");
+            } catch (FileNotFoundException e) {
+                output = new FileOutputStream("Users.properties");
+                input = new FileInputStream("Users.properties");
+            }
             propertie.load(input);
             if (propertie.getProperty(userName) != null) {
                 if (propertie.getProperty(userName).equals(password)) {
@@ -94,8 +116,6 @@ public class ManejoProperties {
                 }
             }
             return false;
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

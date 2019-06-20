@@ -53,6 +53,7 @@ public class LogicThread extends Thread {
             //mostrarTablero();
             while (continuar) {
                 recibir();
+                System.out.println("Hilo envia");
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -49,8 +49,8 @@ public class Server {
                     waiting = Registro.isTocaBoton();
                 }
 //                wait.verificar();
-//                System.out.println(waiting);
-                    notifyAll();
+                System.out.println(waiting);
+//                    notifyAll();
 //                try {
 //                    Thread.sleep(PORT);
 //                } catch (InterruptedException e) {
