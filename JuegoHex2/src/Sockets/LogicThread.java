@@ -25,39 +25,33 @@ public class LogicThread extends Thread {
     private ObjectInputStream input;
     private Tablero tablero = new Tablero(7, this);
     private boolean continuar = true;
-    private WaitConnection wait = new WaitConnection(this);
-    private static boolean waiting = false;
+//    private WaitConnection wait = new WaitConnection(this);
+//    private static boolean waiting = false;
 
     public LogicThread(Socket connection) {
         this.connection = connection;
-//        this.tablero = new Tablero(7,this);
-//        this.tablero.setVisible(true);
+        this.tablero = new Tablero(7,this);
+        this.tablero.setVisible(true);
     }
 
     public LogicThread() {
     }
 
-    public boolean isWaiting() {
-        return waiting;
-    }
+//    public boolean isWaiting() {
+//        return waiting;
+//    }
+//
+//    public void setWaiting(boolean waiting) {
+//        this.waiting = waiting;
+//    }
 
-    public void setWaiting(boolean waiting) {
-        this.waiting = waiting;
-    }
-    
     @Override
     public void run() {
         try {
-            new VentanaPrincipal().setVisible(true);
+//            tablero.setVisible(true);
             getStreams();
             //mostrarTablero();
             while (continuar) {
-                while (!waiting) {                    
-                    mostrarVentana();
-                }
-                while (waiting) {                    
-                    wait.verificar();
-                }
                 recibir();
             }
         } catch (IOException e) {
@@ -69,16 +63,16 @@ public class LogicThread extends Thread {
         }
     }
 
-    private void mostrarVentana(){
-        if (Ingresar.isTocaBoton() || Registro.isTocaBoton()) {
-            wait.mostrarVentana();
-            waiting = true;
-        } else {
-            wait.dispose();
-            waiting = false;
-        }
-    }
-    
+//    private void mostrarVentana() {
+//        if (Ingresar.isTocaBoton() || Registro.isTocaBoton()) {
+//            wait.mostrarVentana();
+//            waiting = true;
+//        } else {
+//            wait.dispose();
+//            waiting = false;
+//        }
+//    }
+
     private void getStreams() throws IOException {
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();

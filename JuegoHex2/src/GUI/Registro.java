@@ -182,7 +182,7 @@ public class Registro extends javax.swing.JDialog {
                     tocaBoton = true;
                     if (waitingConnection) {
                         wait.setVisible(true);
-                        //waitingConnection = true;
+//                        waitingConnection = true;
                     }else if (!waitingConnection) {
                         wait.setVisible(false);
                     }

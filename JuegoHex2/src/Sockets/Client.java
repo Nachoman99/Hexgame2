@@ -41,21 +41,27 @@ public class Client {
     public void setWaiting(boolean waiting) {
         this.waiting = waiting;
     }
-    
-    public void runClient() {
+
+    public synchronized void runClient() {
         this.mainWindow = new VentanaPrincipal();
         mainWindow.setVisible(true);
+//        while (!waiting) {
+//            mostrarWaiting();
+//        }
+        while (!waiting) {
+            waiting = Ingresar.isTocaBoton();
+            if (waiting == false) {
+                waiting = Registro.isTocaBoton();
+            }
+//                wait.verificar();
+//                System.out.println(waiting);
+            notifyAll();
+        }
         try {
             connectToServer();
             getStreams();
-            tablero.deshabilitar();
+//            tablero.deshabilitar();
             while (continuar) {
-                while (!waiting) {                    
-                    mostrarWaiting();
-                }
-                while (waiting) {                    
-                    wait.verificar();
-                }
                 recibir();
             }
         } catch (IOException ex) {
@@ -67,7 +73,7 @@ public class Client {
         }
     }
 
-    private void mostrarWaiting(){
+    private void mostrarWaiting() {
         if (Ingresar.isTocaBoton() || Registro.isTocaBoton()) {
             wait.mostrarVentana();
             waiting = true;
@@ -76,7 +82,7 @@ public class Client {
             waiting = false;
         }
     }
-    
+
     public synchronized void enviar(Hexagon hexa) throws IOException, ClassNotFoundException {
         output.writeObject(hexa);
         //output.writeBoolean(continuar);no se cooo mandarlo
@@ -84,9 +90,9 @@ public class Client {
     }
 
     private void recibir() throws IOException, ClassNotFoundException {
-        
+
         int jugadorWin = input.readInt();
-        
+
         if (jugadorWin != 0) {
 
             if (jugadorWin == 1) {
@@ -108,8 +114,8 @@ public class Client {
         System.out.println("Attempting connection\n");
         client = new Socket(HOST, PORT);
         System.out.println("Connected to: " + client.getInetAddress().getHostName());
-//        tablero = new Tablero2(7, this);
-//        tablero.setVisible(true);
+        tablero = new Tablero2(7, this);
+        tablero.setVisible(true);
     }
 
     private void getStreams() throws IOException {

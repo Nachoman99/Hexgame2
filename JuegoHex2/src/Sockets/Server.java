@@ -23,8 +23,10 @@ public class Server {
     private ServerSocket server;
     private Socket connection;
     private final int PORT = 12345;
+    private WaitConnection wait = new WaitConnection(this);
+    private static boolean waiting = false;
 
-    public void runServer() {
+    public synchronized void runServer() {
         try {
 //            Ingresar.setWaitingConnection(true);
 //            Registro.setWaitingConnection(true);
@@ -37,9 +39,25 @@ public class Server {
 //                    registro = Registro.getIniciarEspera();
 //                } else {
 //                    
-                    
+
 //                }
 //            }
+            new VentanaPrincipal().setVisible(true);
+            while (!waiting) {
+                waiting = Ingresar.isTocaBoton();
+                if (waiting == false) {
+                    waiting = Registro.isTocaBoton();
+                }
+//                wait.verificar();
+//                System.out.println(waiting);
+                    notifyAll();
+//                try {
+//                    Thread.sleep(PORT);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
+            }
             waitForConnection();
             new LogicThread(connection).start();
         } catch (IOException ex) {
@@ -63,6 +81,14 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    public void setWaiting(boolean waiting) {
+        this.waiting = waiting;
     }
 
     public static void main(String[] args) {

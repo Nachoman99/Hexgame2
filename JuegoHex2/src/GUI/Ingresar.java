@@ -6,6 +6,7 @@
 //Pichudo pichudo
 package GUI;
 
+import Sockets.Client;
 import Users.ManejoProperties;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
@@ -169,6 +170,7 @@ public class Ingresar extends javax.swing.JDialog {
             this.setVisible(false);
             iniciarEspera = true;
             tocaBoton = true;
+            
 //            if (waitingConnection) {
 //                wait.setVisible(true);
 //                //waitingConnection = true;

@@ -7,6 +7,7 @@ package GUI;
 
 import Sockets.Client;
 import Sockets.LogicThread;
+import Sockets.Server;
 
 /**
  *
@@ -15,7 +16,7 @@ import Sockets.LogicThread;
 public class WaitConnection extends javax.swing.JDialog {
 
     private Client client;
-    private LogicThread thread;
+    private Server server;
 
     public WaitConnection(Client client) {
         initComponents();
@@ -24,9 +25,9 @@ public class WaitConnection extends javax.swing.JDialog {
         new WaitConnectionThread(this).start();
     }
 
-    public WaitConnection(LogicThread thread) {
+    public WaitConnection(Server server) {
         initComponents();
-        this.thread = thread;
+        this.server = server;
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         new WaitConnectionThread(this).start();
     }
@@ -136,13 +137,37 @@ public class WaitConnection extends javax.swing.JDialog {
     }
     
     public void verificar(){
-        if (this.client.isWaiting() || this.thread.isWaiting()) {
+        if(server == null){
             this.dispose();
-            new Tablero(7, this.thread).setVisible(true);
-            new Tablero2(7, this.client).setVisible(true);
-            this.client.setWaiting(false);
-            this.thread.setWaiting(false);
+            if(this.client.isWaiting()){
+//                new Tablero2(7, this.client).setVisible(true);
+                this.client.setWaiting(false);
+            }
+        }else{
+            this.dispose();
+            if(this.server.isWaiting()){
+//                new Tablero(7, this.thread).setVisible(true);
+                this.server.setWaiting(false);
+            }
+            
+            
         }
+        
+//        if (this.client.isWaiting() || this.thread.isWaiting()) {
+//            this.dispose();
+//            new Tablero(7, this.thread).setVisible(true);
+//            new Tablero2(7, this.client).setVisible(true);
+//            if(client!=null){
+//                this.client.setWaiting(false);
+//            }else if(thread!=null){
+//                this.thread.setWaiting(false);
+//            }else if(thread!=null ||client!=null){
+//                this.thread.setWaiting(false);
+//                this.client.setWaiting(false);
+//            }
+//            
+//            
+//        }
     }
     
     private class WaitConnectionThread extends Thread{
