@@ -78,16 +78,7 @@ public class LogicThread extends Thread {
     public Tablero getTablero() {
         return tablero;
     }
-
-//    private void mostrarVentana() {
-//        if (Ingresar.isTocaBoton() || Registro.isTocaBoton()) {
-//            wait.mostrarVentana();
-//            waiting = true;
-//        } else {
-//            wait.dispose();
-//            waiting = false;
-//        }
-//    }
+    
     private void getStreams() throws IOException {
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
@@ -98,7 +89,6 @@ public class LogicThread extends Thread {
         try {
             output.writeInt(jugadorWin);
             output.writeObject(hexa);
-            //output.writeBoolean(continuar);no se como mandarlo
             tablero.deshabilitar();
 
             if (jugadorWin != 0) {

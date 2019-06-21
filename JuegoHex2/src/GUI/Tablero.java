@@ -34,7 +34,7 @@ public class Tablero extends javax.swing.JFrame {
     private static Hexagon hexagonoActualizar;
     private LogicThread connector;
     private static boolean salir = false;
-    
+
     /**
      * Creates new form Tablero
      */
@@ -69,24 +69,15 @@ public class Tablero extends javax.swing.JFrame {
         return salir;
     }
 
-    public void updateButtons(int indicadorJugador, int x, int y) {
-        int indiceJugadorVerification = 0;
-        buttons[(x + 1)][(y + 1)].changeColor(indicadorJugador);
-        buttons[(x+1)][(y+1)].setUso(true);
-        Hexagon hexagon = new Hexagon(indicadorJugador, x, y);
-        logic.verificationPredecessor(hexagon, indicadorJugador);
-        if (indicadorJugador == 1) {
-            indiceJugadorVerification = indicadorJugador;
-            logic.addHexagonTreeJ1(hexagon);
-            ++indicadorJugador;
+    public void updateButtons(int numJugador, int x, int y) {
+        
+        buttons[(x + 1)][(y + 1)].changeColor(numJugador);
+        buttons[(x + 1)][(y + 1)].setUso(true);
+        Hexagon hexagon = new Hexagon(numJugador, x, y);
+        logic.verificationPredecessor(hexagon, numJugador);
+        logic.addHexagonTreeJ2(hexagon);
 
-        } else if (indicadorJugador == 2) {
-            indiceJugadorVerification = indicadorJugador;
-            logic.addHexagonTreeJ2(hexagon);
-            --indicadorJugador;
-
-        }
-        ObserverWinner.getInstance().verifyWinPlayer(indiceJugadorVerification);
+        ObserverWinner.getInstance().verifyWinPlayer(numJugador);
 
         try {
             connector.enviar(null, ObserverWinner.getInstance().verifyFinishWin());
@@ -105,28 +96,14 @@ public class Tablero extends javax.swing.JFrame {
                 buttons[i][j].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        int indiceJugadorVerification = 0;
+
                         HexagonalButton clickedButton = (HexagonalButton) e.getSource();
                         Hexagon hexagon = new Hexagon(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
                         logic.verificationPredecessor(hexagon, indicadorJugador);
-
-                        if (indicadorJugador == 1) {
-                            clickedButton.changeColor(1);
-                            indiceJugadorVerification = indicadorJugador;
-                            logic.addHexagonTreeJ1(hexagon);
-                            //++indicadorJugador;
-                            clickedButton.setUso(true);
-                           
-                        }
-//                        else if (indicadorJugador == 2) {
-//                            clickedButton.changeColor(2);
-//                            indiceJugadorVerification = indicadorJugador;
-//                            logic.addHexagonTreeJ2(hexagon);
-//                            --indicadorJugador;
-//
-//                        }
-
-                        ObserverWinner.getInstance().verifyWinPlayer(indiceJugadorVerification);
+                        clickedButton.changeColor(1);
+                        logic.addHexagonTreeJ1(hexagon);
+                        clickedButton.setUso(true);
+                        ObserverWinner.getInstance().verifyWinPlayer(indicadorJugador);
                         hexagonoActualizar = new Hexagon(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
 
                         try {
@@ -236,7 +213,6 @@ public class Tablero extends javax.swing.JFrame {
 //        Tablero tablero = new Tablero(7);
 //        tablero.setVisible(true);
 //    }
-
     private void close() {
         try {
             this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -262,7 +238,7 @@ public class Tablero extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
