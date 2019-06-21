@@ -6,6 +6,7 @@ import GUI.Tablero;
 import GUI.VentanaPrincipal;
 import GUI.WaitConnection;
 import Logic.Hexagon;
+import estructura.ObserverWinner;
 import java.awt.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,14 +26,15 @@ public class LogicThread extends Thread {
     private ObjectOutputStream output;
     private ObjectInputStream input;
     private Tablero tablero = new Tablero(7, this);
-    private boolean continuar = true;
+    private boolean continuar;
 //    private WaitConnection wait = new WaitConnection(this);
 //    private static boolean waiting = false;
 
     public LogicThread(Socket connection) {
         this.connection = connection;
-        this.tablero = new Tablero(7,this);
+        this.tablero = new Tablero(7, this);
         this.tablero.setVisible(true);
+        continuar = true;
     }
 
     public LogicThread() {
@@ -44,9 +47,9 @@ public class LogicThread extends Thread {
 //    public void setWaiting(boolean waiting) {
 //        this.waiting = waiting;
 //    }
-
     @Override
     public void run() {
+
         try {
 //            tablero.setVisible(true);
             getStreams();
@@ -62,6 +65,11 @@ public class LogicThread extends Thread {
         } finally {
             closeConnection();
         }
+
+    }
+
+    public Tablero getTablero() {
+        return tablero;
     }
 
 //    private void mostrarVentana() {
@@ -73,7 +81,6 @@ public class LogicThread extends Thread {
 //            waiting = false;
 //        }
 //    }
-
     private void getStreams() throws IOException {
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
@@ -85,6 +92,10 @@ public class LogicThread extends Thread {
         output.writeObject(hexa);
         //output.writeBoolean(continuar);no se como mandarlo
         tablero.deshabilitar();
+
+        if (jugadorWin != 0) {
+            continuar = false;
+        }
     }
 
     private void recibir() throws IOException, ClassNotFoundException {
@@ -101,7 +112,20 @@ public class LogicThread extends Thread {
     }
 
     private void closeConnection() {
-        System.out.println("\nClosing connection");
+
+        if (ObserverWinner.getInstance().verifyFinishWin() != 0) {
+
+            if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
+
+                JOptionPane.showMessageDialog(null, "S: Gano el jugador 1");
+            } else {
+
+                JOptionPane.showMessageDialog(null, "S: Gano el jugador 2");
+            }
+        }
+        tablero.dispose();
+        
+        System.out.println("\nClosing connection hilo");
         try {
             output.close();
             input.close();

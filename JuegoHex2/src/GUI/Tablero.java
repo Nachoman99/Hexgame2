@@ -78,17 +78,6 @@ public class Tablero extends javax.swing.JFrame {
         }
         ObserverWinner.getInstance().verifyWinPlayer(indiceJugadorVerification);
 
-        if (ObserverWinner.getInstance().verifyFinishWin() != 0) {
-
-            if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
-
-                JOptionPane.showMessageDialog(null, "Gano el jugador 1");
-            } else {
-
-                JOptionPane.showMessageDialog(null, "Gano el jugador 2");
-            }
-        }
-
         try {
             connector.enviar(null, ObserverWinner.getInstance().verifyFinishWin());
         } catch (IOException ex) {
@@ -138,16 +127,6 @@ public class Tablero extends javax.swing.JFrame {
                             o.printStackTrace();
                         }
 
-                        if (ObserverWinner.getInstance().verifyFinishWin() != 0) {
-
-                            if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
-
-                                JOptionPane.showMessageDialog(null, "Gano el jugador 1");
-                            } else {
-
-                                JOptionPane.showMessageDialog(null, "Gano el jugador 2");
-                            }
-                        }
                         repaint();
                     }
                 });

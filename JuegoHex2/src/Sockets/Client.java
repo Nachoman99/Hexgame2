@@ -33,6 +33,7 @@ public class Client {
     private boolean continuar = true;
     private WaitConnection wait = new WaitConnection(this);
     private boolean waiting = false;
+    int jugadorWinner = 0;
 
     public boolean isWaiting() {
         return waiting;
@@ -99,11 +100,11 @@ public class Client {
         if (jugadorWin != 0) {
 
             if (jugadorWin == 1) {
-                JOptionPane.showMessageDialog(null, "Gano Jugador 1");
+                jugadorWinner = 1;
             } else {
-                JOptionPane.showMessageDialog(null, "Gano Jugador 2");
+                jugadorWinner = 2;
             }
-
+            continuar = false;
         }
 
         Hexagon hexa = (Hexagon) input.readObject();
@@ -131,7 +132,18 @@ public class Client {
     }
 
     private void closeConnection() {
-        System.out.println("\nClosing connection");
+
+        if (jugadorWinner == 1) {
+            JOptionPane.showMessageDialog(null, "C: Gano Jugador 1");
+        }
+
+        if (jugadorWinner == 2) {
+            JOptionPane.showMessageDialog(null, "C: Gano Jugador 2");
+        }
+
+        tablero.dispose();
+
+        System.out.println("\nClosing connection Client");
         try {
             output.close();
             input.close();

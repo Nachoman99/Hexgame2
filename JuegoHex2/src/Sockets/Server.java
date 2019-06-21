@@ -73,6 +73,7 @@ public class Server {
     }
 
     private void closeServer() {
+
         System.out.println("\nTerminating server");
         try {
             server.close();
