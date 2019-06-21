@@ -72,7 +72,7 @@ public class Client {
             tablero.setVisible(true);
             while (continuar) {
                 //while (!Tablero.isSalir()) {
-                    recibir();
+                recibir();
                 //}
 
 //                System.out.println("Recibe cliente");
@@ -147,13 +147,18 @@ public class Client {
                 conectado = true;
             }
         }
-        
     }
 
     private void getStreams() throws IOException {
-        output = new ObjectOutputStream(client.getOutputStream());
-        output.flush();
-        input = new ObjectInputStream(client.getInputStream());
+        try {
+            output = new ObjectOutputStream(client.getOutputStream());
+            output.flush();
+            input = new ObjectInputStream(client.getInputStream());
+        } catch (SocketException e) {
+            wait.dispose();
+            JOptionPane.showMessageDialog(null, "Se perdió la conexión con el servidor");
+            System.exit(0);
+        }
     }
 
     private void closeConnection() {
