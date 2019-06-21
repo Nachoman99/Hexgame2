@@ -59,8 +59,8 @@ public class LogicThread extends Thread {
             while (continuar) {
                 Thread.sleep(1000);
                 //while (!Tablero2.isSalir()) {
-                    recibir();
-               // }
+                recibir();
+                // }
                 Thread.sleep(1000);
             }
         } catch (IOException e) {
@@ -113,7 +113,6 @@ public class LogicThread extends Thread {
         } catch (SocketException e) {
 
         }
-
     }
 
     private void recibir() throws IOException, ClassNotFoundException {
@@ -141,10 +140,10 @@ public class LogicThread extends Thread {
 
             if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
 
-                JOptionPane.showMessageDialog(null, "S: Gano el jugador 1");
+                JOptionPane.showMessageDialog(null, "S: USTED HA GANADO");
             } else {
 
-                JOptionPane.showMessageDialog(null, "S: Gano el jugador 2");
+                JOptionPane.showMessageDialog(null, "S: USTED HA PERDIDO");
             }
         }
         tablero.dispose();

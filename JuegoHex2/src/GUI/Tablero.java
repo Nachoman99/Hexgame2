@@ -62,6 +62,7 @@ public class Tablero extends javax.swing.JFrame {
         buttons = new HexagonalButton[tamaño + 2][tamaño + 2];
         boardCreation(tamaño + 2);
         initializerActions(tamaño + 2);
+        close();
     }
 
     public static boolean isSalir() {
@@ -258,7 +259,6 @@ public class Tablero extends javax.swing.JFrame {
         int option = JOptionPane.showConfirmDialog(this, "¿Está seguro que quiere salir?\n\n"
                 + "SE PERDERÁ SU PROGRESO", "SALIR", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
-           // connector.enviarSalio(false);
             System.exit(0);
         }
     }

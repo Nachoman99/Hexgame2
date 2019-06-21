@@ -297,7 +297,6 @@ public class Tablero2 extends javax.swing.JFrame {
         int option = JOptionPane.showConfirmDialog(this, "¿Está seguro que quiere salir?\n\n"
                 + "SE PERDERÁ SU PROGRESO", "SALIR", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
-            //client.enviarSalio(false);
             System.exit(0);
         }
     }
