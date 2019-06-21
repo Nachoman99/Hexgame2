@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -279,7 +281,11 @@ public class Tablero2 extends javax.swing.JFrame {
             addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    confirm();
+                    try {
+                        confirm();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             });
         } catch (Exception e) {
@@ -287,11 +293,11 @@ public class Tablero2 extends javax.swing.JFrame {
         }
     }
 
-    private void confirm() {
+    private void confirm() throws IOException {
         int option = JOptionPane.showConfirmDialog(this, "¿Está seguro que quiere salir?\n\n"
                 + "SE PERDERÁ SU PROGRESO", "SALIR", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
-            salir = true;
+            //client.enviarSalio(false);
             System.exit(0);
         }
     }

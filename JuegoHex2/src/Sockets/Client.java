@@ -70,10 +70,10 @@ public class Client {
             tablero = new Tablero2(7, this);
             tablero.setVisible(true);
             while (continuar) {
-                while (!Tablero.isSalir()) {                    
+                //while (!Tablero.isSalir()) {
                     recibir();
-                }
-                
+                //}
+
 //                System.out.println("Recibe cliente");
             }
         } catch (IOException ex) {
@@ -123,7 +123,7 @@ public class Client {
         } catch (SocketException e) {
             continuar = false;
             JOptionPane.showMessageDialog(null, "El jugador 1 a abandonado el juego");
-           // System.exit(0);
+            //recibirSalio();
         }
 
     }
@@ -147,7 +147,6 @@ public class Client {
         }
 
     }
-
 
     private void getStreams() throws IOException {
         output = new ObjectOutputStream(client.getOutputStream());

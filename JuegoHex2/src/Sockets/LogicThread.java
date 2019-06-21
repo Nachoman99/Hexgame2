@@ -58,9 +58,9 @@ public class LogicThread extends Thread {
             //mostrarTablero();
             while (continuar) {
                 Thread.sleep(1000);
-                while (!Tablero2.isSalir()) {
+                //while (!Tablero2.isSalir()) {
                     recibir();
-                }
+               // }
                 Thread.sleep(1000);
             }
         } catch (IOException e) {
@@ -111,6 +111,7 @@ public class LogicThread extends Thread {
 
             }
         } catch (SocketException e) {
+
         }
 
     }

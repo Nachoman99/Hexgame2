@@ -242,7 +242,11 @@ public class Tablero extends javax.swing.JFrame {
             addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    confirm();
+                    try {
+                        confirm();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             });
         } catch (Exception e) {
@@ -250,11 +254,11 @@ public class Tablero extends javax.swing.JFrame {
         }
     }
 
-    private void confirm() {
+    private void confirm() throws IOException {
         int option = JOptionPane.showConfirmDialog(this, "¿Está seguro que quiere salir?\n\n"
                 + "SE PERDERÁ SU PROGRESO", "SALIR", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
-            salir = true;
+           // connector.enviarSalio(false);
             System.exit(0);
         }
     }
