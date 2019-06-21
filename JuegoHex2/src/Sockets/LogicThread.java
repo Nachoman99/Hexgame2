@@ -95,6 +95,12 @@ public class LogicThread extends Thread {
 
         if (jugadorWin != 0) {
             continuar = false;
+            try {
+                sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
         }
     }
 
@@ -130,6 +136,7 @@ public class LogicThread extends Thread {
             output.close();
             input.close();
             connection.close();
+            System.exit(0);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

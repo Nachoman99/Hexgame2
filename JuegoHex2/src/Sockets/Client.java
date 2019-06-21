@@ -14,6 +14,7 @@ import Logic.Hexagon;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import javax.swing.JOptionPane;
 
@@ -64,6 +65,8 @@ public class Client {
             connectToServer();
             getStreams();
 //            tablero.deshabilitar();
+            tablero = new Tablero2(7, this);
+            tablero.setVisible(true);
             while (continuar) {
                 recibir();
 //                System.out.println("Recibe cliente");
@@ -118,12 +121,25 @@ public class Client {
     }
 
     private void connectToServer() throws IOException {
+        boolean conectado = false;
         System.out.println("Attempting connection\n");
-        client = new Socket(HOST, PORT);
-        System.out.println("Connected to: " + client.getInetAddress().getHostName());
-        tablero = new Tablero2(7, this);
-        tablero.setVisible(true);
+        while (!conectado) {
+            try {
+                client = new Socket(HOST, PORT);
+            } catch (ConnectException e) {
+                System.out.println("esperando server");
+            }
+
+            if (client != null) {
+                System.out.println("Connected to: " + client.getInetAddress().getHostName());
+//                tablero = new Tablero2(7, this);
+//                tablero.setVisible(true);
+                conectado = true;
+            }
+        }
+
     }
+
 
     private void getStreams() throws IOException {
         output = new ObjectOutputStream(client.getOutputStream());
@@ -148,6 +164,7 @@ public class Client {
             output.close();
             input.close();
             client.close();
+            System.exit(0);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

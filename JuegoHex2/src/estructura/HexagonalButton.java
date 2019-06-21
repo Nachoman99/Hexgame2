@@ -25,17 +25,28 @@ public class HexagonalButton extends JButton {
     private int x1[] = new int[SIDES];
     private int y1[] = new int[SIDES];
     private Color color = Color.WHITE;
-
-    public HexagonalButton(int row, int col) {
+    private boolean uso=false;
+    
+    public HexagonalButton(int row, int col, boolean uso) {
         this.row = row;
         this.col = col;
-
+        this.uso=uso;
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
         this.setBorderPainted(false);
         this.setPreferredSize(new Dimension(WIDTH, LENGTH));
     }
 
+    public boolean isUso() {
+        return uso;
+    }
+
+    public void setUso(boolean uso) {
+        this.uso = uso;
+    }
+
+    
+    
     @Override
     public boolean contains(int x11, int y11) {
         Polygon poly = new Polygon();

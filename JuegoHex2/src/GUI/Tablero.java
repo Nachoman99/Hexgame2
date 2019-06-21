@@ -63,6 +63,7 @@ public class Tablero extends javax.swing.JFrame {
     public void updateButtons(int indicadorJugador, int x, int y) {
         int indiceJugadorVerification = 0;
         buttons[(x + 1)][(y + 1)].changeColor(indicadorJugador);
+        buttons[(x+1)][(y+1)].setUso(true);
         Hexagon hexagon = new Hexagon(indicadorJugador, x, y);
         logic.verificationPredecessor(hexagon, indicadorJugador);
         if (indicadorJugador == 1) {
@@ -105,7 +106,8 @@ public class Tablero extends javax.swing.JFrame {
                             indiceJugadorVerification = indicadorJugador;
                             logic.addHexagonTreeJ1(hexagon);
                             //++indicadorJugador;
-
+                            clickedButton.setUso(true);
+                           
                         }
 //                        else if (indicadorJugador == 2) {
 //                            clickedButton.changeColor(2);
@@ -145,7 +147,11 @@ public class Tablero extends javax.swing.JFrame {
     public void habilitar() {
         for (int i = 0; i < tamaño; i++) {
             for (int j = 0; j < tamaño; j++) {
-                buttons[i][j].setEnabled(true);
+                if (buttons[i][j].isUso()) {
+                    buttons[i][j].setEnabled(false);
+                } else {
+                    buttons[i][j].setEnabled(true);
+                }
             }
         }
     }
@@ -156,25 +162,29 @@ public class Tablero extends javax.swing.JFrame {
         int y = 30;
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                buttons[row][col] = new HexagonalButton(row - 1, col - 1);
+                buttons[row][col] = new HexagonalButton(row - 1, col - 1, false);
                 add(buttons[row][col]);
                 buttons[row][col].setBounds(x, y, 56, 56);
 
                 if (row == 0) {
                     buttons[0][col].colorCambiante(1);
                     buttons[0][col].setEnabled(false);
+                    buttons[0][col].setUso(true);
                 }
                 if (row == (size - 1)) {
                     buttons[(size - 1)][col].colorCambiante(1);
                     buttons[(size - 1)][col].setEnabled(false);
+                    buttons[0][col].setUso(true);
                 }
                 if (col == 0) {
                     buttons[row][0].colorCambiante(2);
                     buttons[row][0].setEnabled(false);
+                    buttons[0][col].setUso(true);
                 }
                 if (col == (size - 1)) {
                     buttons[row][(size - 1)].colorCambiante(2);
                     buttons[row][(size - 1)].setEnabled(false);
+                    buttons[0][col].setUso(true);
                 }
                 x += 45;
             }
