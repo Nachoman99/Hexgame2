@@ -54,7 +54,7 @@ public class Client {
                 waiting = Registro.isTocaBoton();
             }
 //                wait.verificar();
-                System.out.println(waiting);
+            System.out.println(waiting);
 //            notifyAll();
         }
         try {
@@ -103,12 +103,15 @@ public class Client {
             }
 
         }
-        Hexagon hexa = (Hexagon) input.readObject();
-        //JOptionPane.showMessageDialog(null, hexa);
-        tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
 
-        //JOptionPane.showMessageDialog(null, jugadorWin);
-        tablero.habilitar();
+        Hexagon hexa = (Hexagon) input.readObject();
+        if (hexa != null) {
+            //JOptionPane.showMessageDialog(null, hexa);
+            tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
+
+            //JOptionPane.showMessageDialog(null, jugadorWin);
+            tablero.habilitar();
+        }
     }
 
     private void connectToServer() throws IOException {

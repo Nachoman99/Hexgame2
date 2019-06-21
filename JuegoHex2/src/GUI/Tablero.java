@@ -89,6 +89,14 @@ public class Tablero extends javax.swing.JFrame {
             }
         }
 
+        try {
+            connector.enviar(null, ObserverWinner.getInstance().verifyFinishWin());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
         repaint();
     }
 
@@ -123,7 +131,7 @@ public class Tablero extends javax.swing.JFrame {
 
                         try {
                             connector.enviar(hexagonoActualizar, ObserverWinner.getInstance().verifyFinishWin());
-                            //connector.enviarJugadorWin(ObserverWinner.getInstance().verifyFinishWin());
+
                         } catch (IOException p) {
                             p.printStackTrace();
                         } catch (ClassNotFoundException o) {
