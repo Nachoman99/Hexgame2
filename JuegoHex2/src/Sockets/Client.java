@@ -67,6 +67,7 @@ public class Client {
             connectToServer();
             getStreams();
 //            tablero.deshabilitar();
+            wait.setVisible(false);
             tablero = new Tablero2(7, this);
             tablero.setVisible(true);
             while (continuar) {
@@ -129,6 +130,7 @@ public class Client {
     }
 
     private void connectToServer() throws IOException {
+        wait.setVisible(true);
         boolean conectado = false;
         System.out.println("Attempting connection\n");
         while (!conectado) {
@@ -145,7 +147,7 @@ public class Client {
                 conectado = true;
             }
         }
-
+        
     }
 
     private void getStreams() throws IOException {

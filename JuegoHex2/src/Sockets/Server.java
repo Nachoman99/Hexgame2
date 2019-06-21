@@ -66,9 +66,11 @@ public class Server {
     }
 
     private void waitForConnection() throws IOException {
+        wait.setVisible(true);
         System.out.println("Waiting for connection...\n");
         connection = server.accept();
         System.out.println("Connection received from: " + connection.getInetAddress().getHostName());
+        wait.setVisible(false);
 
     }
 
