@@ -180,17 +180,17 @@ public class Tablero2 extends javax.swing.JFrame {
                 if (row == (size - 1)) {
                     buttons[(size - 1)][col].colorCambiante(1);
                     buttons[(size - 1)][col].setEnabled(false);
-                    buttons[0][col].setUso(true);
+                    buttons[(size - 1)][col].setUso(true);
                 }
                 if (col == 0) {
                     buttons[row][0].colorCambiante(2);
                     buttons[row][0].setEnabled(false);
-                    buttons[0][col].setUso(true);
+                    buttons[row][0].setUso(true);
                 }
                 if (col == (size - 1)) {
                     buttons[row][(size - 1)].colorCambiante(2);
                     buttons[row][(size - 1)].setEnabled(false);
-                    buttons[0][col].setUso(true);
+                    buttons[row][(size - 1)].setUso(true);
                 }
                 x += 45;
             }
