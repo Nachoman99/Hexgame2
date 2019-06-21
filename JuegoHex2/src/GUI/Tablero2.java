@@ -89,9 +89,14 @@ public class Tablero2 extends javax.swing.JFrame {
                         logic.verificationPredecessor(hexagon, indicadorJugador);
 
                         hexagonoActualizar = new Hexagon(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
-
+                        
                         try {
+                             Thread.sleep(100);
                             client.enviar(hexagonoActualizar);
+                            System.out.println("envio el cliente");
+                               
+                        }catch(InterruptedException op){
+                            op.printStackTrace();
                         } catch (IOException p) {
                             p.printStackTrace();
                         } catch (ClassNotFoundException o) {

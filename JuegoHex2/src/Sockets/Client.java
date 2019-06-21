@@ -53,9 +53,11 @@ public class Client {
             if (waiting == false) {
                 waiting = Registro.isTocaBoton();
             }
-//                wait.verificar();
-            System.out.println(waiting);
-//            notifyAll();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         try {
             connectToServer();
@@ -63,7 +65,7 @@ public class Client {
 //            tablero.deshabilitar();
             while (continuar) {
                 recibir();
-                System.out.println("Recibe cliente");
+//                System.out.println("Recibe cliente");
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -84,7 +86,7 @@ public class Client {
         }
     }
 
-    public synchronized void enviar(Hexagon hexa) throws IOException, ClassNotFoundException {
+    public void enviar(Hexagon hexa) throws IOException, ClassNotFoundException {
         output.writeObject(hexa);
         //output.writeBoolean(continuar);no se cooo mandarlo
         tablero.deshabilitar();

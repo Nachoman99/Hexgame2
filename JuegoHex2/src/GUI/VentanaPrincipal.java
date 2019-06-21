@@ -5,6 +5,9 @@
  */
 package GUI;
 
+import Sockets.Client;
+import Sockets.LogicThread;
+import Sockets.Server;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -16,6 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    private Client client;
+    private Server server;
+
     /**
      * Creates new form VentanaPrincipal
      */
@@ -25,6 +31,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         close();
     }
+
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,6 +135,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Registro registro = new Registro(this, true);
         this.setVisible(false);
         registro.setVisible(true);
+
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
@@ -135,12 +144,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ingresar.setVisible(true);
     }//GEN-LAST:event_btnIngresarActionPerformed
 
-    private void close(){
+    private void close() {
         try {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            addWindowListener(new WindowAdapter(){
+            addWindowListener(new WindowAdapter() {
                 @Override
-                public void windowClosing(WindowEvent e){
+                public void windowClosing(WindowEvent e) {
                     confirmar();
                 }
             });
@@ -148,14 +157,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
-    private void confirmar(){
+
+    private void confirmar() {
         JOptionPane.showMessageDialog(this, "Gracias por jugar");
     }
-    public static void main(String[] args) {
-        VentanaPrincipal principal = new VentanaPrincipal();
-        principal.setVisible(true);
-    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnRegistrarse;

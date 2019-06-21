@@ -48,14 +48,12 @@ public class Server {
                 if (waiting == false) {
                     waiting = Registro.isTocaBoton();
                 }
-//                wait.verificar();
-                System.out.println(waiting);
-//                    notifyAll();
-//                try {
-//                    Thread.sleep(PORT);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
             waitForConnection();
