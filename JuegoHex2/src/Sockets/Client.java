@@ -7,6 +7,7 @@ package Sockets;
 
 import GUI.Ingresar;
 import GUI.Registro;
+import GUI.Tablero;
 import GUI.Tablero2;
 import GUI.VentanaPrincipal;
 import GUI.WaitConnection;
@@ -16,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketException;
 import javax.swing.JOptionPane;
 
 /**
@@ -68,7 +70,10 @@ public class Client {
             tablero = new Tablero2(7, this);
             tablero.setVisible(true);
             while (continuar) {
-                recibir();
+                while (!Tablero.isSalir()) {                    
+                    recibir();
+                }
+                
 //                System.out.println("Recibe cliente");
             }
         } catch (IOException ex) {
@@ -97,27 +102,30 @@ public class Client {
     }
 
     private void recibir() throws IOException, ClassNotFoundException {
+        try {
+            int jugadorWin = input.readInt();
+            if (jugadorWin != 0) {
 
-        int jugadorWin = input.readInt();
-
-        if (jugadorWin != 0) {
-
-            if (jugadorWin == 1) {
-                jugadorWinner = 1;
-            } else {
-                jugadorWinner = 2;
+                if (jugadorWin == 1) {
+                    jugadorWinner = 1;
+                    System.out.println("Hola");
+                } else {
+                    System.out.println("Hola2");
+                    jugadorWinner = 2;
+                }
+                continuar = false;
             }
+            Hexagon hexa = (Hexagon) input.readObject();
+            if (hexa != null) {
+                tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
+                tablero.habilitar();
+            }
+        } catch (SocketException e) {
             continuar = false;
+            JOptionPane.showMessageDialog(null, "El jugador 1 a abandonado el juego");
+           // System.exit(0);
         }
 
-        Hexagon hexa = (Hexagon) input.readObject();
-        if (hexa != null) {
-            //JOptionPane.showMessageDialog(null, hexa);
-            tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
-
-            //JOptionPane.showMessageDialog(null, jugadorWin);
-            tablero.habilitar();
-        }
     }
 
     private void connectToServer() throws IOException {

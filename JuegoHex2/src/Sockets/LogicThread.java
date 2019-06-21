@@ -3,6 +3,7 @@ package Sockets;
 import GUI.Ingresar;
 import GUI.Registro;
 import GUI.Tablero;
+import GUI.Tablero2;
 import GUI.VentanaPrincipal;
 import GUI.WaitConnection;
 import Logic.Hexagon;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -55,13 +57,18 @@ public class LogicThread extends Thread {
             getStreams();
             //mostrarTablero();
             while (continuar) {
-                recibir();
-                System.out.println("Hilo envia");
+                Thread.sleep(1000);
+                while (!Tablero2.isSalir()) {
+                    recibir();
+                }
+                Thread.sleep(1000);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LogicThread.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeConnection();
         }
@@ -88,26 +95,36 @@ public class LogicThread extends Thread {
     }
 
     public synchronized void enviar(Hexagon hexa, int jugadorWin) throws IOException, ClassNotFoundException {
-        output.writeInt(jugadorWin);
-        output.writeObject(hexa);
-        //output.writeBoolean(continuar);no se como mandarlo
-        tablero.deshabilitar();
+        try {
+            output.writeInt(jugadorWin);
+            output.writeObject(hexa);
+            //output.writeBoolean(continuar);no se como mandarlo
+            tablero.deshabilitar();
 
-        if (jugadorWin != 0) {
-            continuar = false;
-            try {
-                sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (jugadorWin != 0) {
+                continuar = false;
+                try {
+                    sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
-            
+        } catch (SocketException e) {
         }
+
     }
 
     private void recibir() throws IOException, ClassNotFoundException {
-        Hexagon hexa = (Hexagon) input.readObject();
-        tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
-        tablero.habilitar();
+        try {
+            Hexagon hexa = (Hexagon) input.readObject();
+            tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
+            tablero.habilitar();
+        } catch (SocketException e) {
+            continuar = false;
+            JOptionPane.showMessageDialog(null, "El jugador 2 ha abandonado el juego");
+        }
+
     }
 
     private void mostrarTablero() {
@@ -130,7 +147,7 @@ public class LogicThread extends Thread {
             }
         }
         tablero.dispose();
-        
+
         System.out.println("\nClosing connection hilo");
         try {
             output.close();

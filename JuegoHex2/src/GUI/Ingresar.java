@@ -163,27 +163,16 @@ public class Ingresar extends javax.swing.JDialog {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
 
-        if (prop.archivoExiste()) {
-            if (!prop.verifyPassword(tfID.getText(), prop.encriptar2(Arrays.toString(tfPassword.getPassword())))) {
-                JOptionPane.showMessageDialog(null, "La contraseña o el nombre de usuario son incorrectos");
-            } else {
-                this.setVisible(false);
-                iniciarEspera = true;
-                tocaBoton = true;
-            }
-        } else {
+        if (!prop.archivoExiste()) {
             prop.crearArchivo();
-            if (!prop.verifyPassword(tfID.getText(), prop.encriptar2(Arrays.toString(tfPassword.getPassword())))) {
-                JOptionPane.showMessageDialog(null, "La contraseña o el nombre de usuario son incorrectos");
-            } else {
-                this.setVisible(false);
-                iniciarEspera = true;
-                tocaBoton = true;
-            }
         }
-
-        //}
-
+        if (!prop.verifyPassword(tfID.getText(), prop.encriptar2(Arrays.toString(tfPassword.getPassword())))) {
+            JOptionPane.showMessageDialog(null, "La contraseña o el nombre de usuario son incorrectos");
+        } else {
+            this.setVisible(false);
+            iniciarEspera = true;
+            tocaBoton = true;
+        }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     public static boolean isWaitingConnection() {
@@ -194,40 +183,6 @@ public class Ingresar extends javax.swing.JDialog {
         Ingresar.waitingConnection = waitingConnection;
     }
 
-//    public static void windowWait(boolean window){
-//        if (window) {
-//            wait.setVisible(true);
-//            waitingConnection = true;
-//        } else {
-//            waitingConnection = false;
-//            wait.setVisible(false);
-//        }
-//    }
-//    private void sizeTablero() {
-//        boolean continu = false;
-//        while (continu == false) {
-//            try {
-//                int size = Integer.parseInt(JOptionPane.showInputDialog("Digite el tamaño del tablero"));
-//                if (size < 7 || size > 12) {
-//                    continu = false;
-//                    JOptionPane.showMessageDialog(this, "Sólo se pueden digitar números entre 7 y 12");
-//                } else {
-//                    continu = true;
-//                    new Tablero(7).setVisible(true);
-//                }
-//            } catch (HeadlessException | NumberFormatException e) {
-//                JOptionPane.showMessageDialog(this, "Por favor digite sólo números");
-//            }
-//        }
-//    }
-//
-//    public int getSizeGame() {
-//        return sizeGame;
-//    }
-//
-//    public void setSizeGame(int sizeGame) {
-//        this.sizeGame = sizeGame;
-//    }
     private void closeX() {
         try {
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

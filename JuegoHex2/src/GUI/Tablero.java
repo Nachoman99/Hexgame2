@@ -13,9 +13,12 @@ import estructura.HexagonalButton;
 import estructura.ObserverWinner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,7 +33,8 @@ public class Tablero extends javax.swing.JFrame {
     Logic logic;
     private static Hexagon hexagonoActualizar;
     private LogicThread connector;
-
+    private static boolean salir = false;
+    
     /**
      * Creates new form Tablero
      */
@@ -58,6 +62,10 @@ public class Tablero extends javax.swing.JFrame {
         buttons = new HexagonalButton[tamaño + 2][tamaño + 2];
         boardCreation(tamaño + 2);
         initializerActions(tamaño + 2);
+    }
+
+    public static boolean isSalir() {
+        return salir;
     }
 
     public void updateButtons(int indicadorJugador, int x, int y) {
@@ -228,6 +236,29 @@ public class Tablero extends javax.swing.JFrame {
 //        tablero.setVisible(true);
 //    }
 
+    private void close() {
+        try {
+            this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    confirm();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void confirm() {
+        int option = JOptionPane.showConfirmDialog(this, "¿Está seguro que quiere salir?\n\n"
+                + "SE PERDERÁ SU PROGRESO", "SALIR", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            salir = true;
+            System.exit(0);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

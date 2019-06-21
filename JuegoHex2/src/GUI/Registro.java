@@ -1,22 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import Users.ManejoProperties;
-import Users.ReaderManagerText;
 import Users.User;
 import Users.UserFactory;
 import Users.UserList;
 import Users.Users;
-import Users.WriterManagerText;
-import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -36,7 +27,6 @@ public class Registro extends javax.swing.JDialog {
     boolean password = false;
     private static WaitConnection wait = new WaitConnection(null, true);
 
-    //private int sizeGame;
     /**
      * Creates new form Registro
      */
@@ -167,90 +157,36 @@ public class Registro extends javax.swing.JDialog {
     }
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
-        //prop.crearArchivo();
-        if (prop.archivoExiste()) {
-            verifyID();
-            verifyPassword();
-            if (ID != true && password != true) {
-                try {
-                    if (!prop.containsUser(tfID.getText())) {
-                        Users userFactory = new UserFactory();
-                        User user = userFactory.createUser(tfID.getText(), Arrays.toString(tfContraseña.getPassword()));
-                        prop.writerUser(user);
-                        iniciarEspera = false;
-                        this.dispose();
-                        tocaBoton = true;
-                        if (waitingConnection) {
-                            wait.setVisible(true);
-//                        waitingConnection = true;
-                        } else if (!waitingConnection) {
-                            wait.setVisible(false);
-                        }
-                        //sizeTablero();
-//                    new Tablero(7).setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "La id ya está en uso, por favor use otra");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        } else {
+
+        if (!prop.archivoExiste()) {
             prop.crearArchivo();
-            verifyID();
-            verifyPassword();
-            if (ID != true && password != true) {
-                try {
-                    if (!prop.containsUser(tfID.getText())) {
-                        Users userFactory = new UserFactory();
-                        User user = userFactory.createUser(tfID.getText(), Arrays.toString(tfContraseña.getPassword()));
-                        prop.writerUser(user);
-                        iniciarEspera = false;
-                        this.dispose();
-                        tocaBoton = true;
-                        if (waitingConnection) {
-                            wait.setVisible(true);
+        }
+        verifyID();
+        verifyPassword();
+        if (ID != true && password != true) {
+            try {
+                if (!prop.containsUser(tfID.getText())) {
+                    Users userFactory = new UserFactory();
+                    User user = userFactory.createUser(tfID.getText(), Arrays.toString(tfContraseña.getPassword()));
+                    prop.writerUser(user);
+                    iniciarEspera = false;
+                    this.dispose();
+                    tocaBoton = true;
+                    if (waitingConnection) {
+                        wait.setVisible(true);
 //                        waitingConnection = true;
-                        } else if (!waitingConnection) {
-                            wait.setVisible(false);
-                        }
-                        //sizeTablero();
-//                    new Tablero(7).setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "La id ya está en uso, por favor use otra");
+                    } else if (!waitingConnection) {
+                        wait.setVisible(false);
                     }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } else {
+                    JOptionPane.showMessageDialog(null, "La ID ya está en uso, por favor use otra");
                 }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
-
     }//GEN-LAST:event_btnRegistroActionPerformed
 
-//    private void sizeTablero() {
-//        boolean continu = false;
-//        while (continu == false) {
-//            try {
-//                int size = Integer.parseInt(JOptionPane.showInputDialog("Digite el tamaño del tablero"));
-//                if (size < 7 || size > 12) {
-//                    continu = false;
-//                    JOptionPane.showMessageDialog(this, "Sólo se pueden digitar números entre 7 y 12");
-//                } else {
-//                    continu = true;
-//                    new Tablero(size).setVisible(true);
-//                }
-//            } catch (HeadlessException | NumberFormatException e) {
-//                JOptionPane.showMessageDialog(this, "Por favor digite sólo números");
-//            }
-//        }
-//    }
-//    public int getSizeGame() {
-//        return sizeGame;
-//    }
-//
-//    public void setSizeGame(int sizeGame) {
-//        this.sizeGame = sizeGame;
-//    }
     private void verifyID() {
         if (tfID.getText().length() < 4) {
             JOptionPane.showMessageDialog(this, "La ID no puede tener una extensión menor a 4 caracteres");
