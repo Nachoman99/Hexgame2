@@ -8,6 +8,7 @@ package GUI;
 import Logic.Hexagon;
 import Logic.Logic;
 import Sockets.Client;
+import estructura.HexagonCommunication;
 import estructura.HexagonalButton;
 import estructura.ObserverWinner;
 import estructura.Punto;
@@ -33,7 +34,7 @@ public class Tablero2 extends javax.swing.JFrame {
     Logic logic;
     private Punto puntoActualizar;
     private Client client;
-    private static Hexagon hexagonoActualizar;
+    private static HexagonCommunication hexagonoActualizar;
     private static boolean salir = false;
 
     /**
@@ -78,6 +79,7 @@ public class Tablero2 extends javax.swing.JFrame {
     }
 
     private void initializerActions(int size) {
+        
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 buttons[i][j].addActionListener(new ActionListener() {
@@ -85,9 +87,7 @@ public class Tablero2 extends javax.swing.JFrame {
                     public void actionPerformed(ActionEvent e) {
 
                         HexagonalButton clickedButton = (HexagonalButton) e.getSource();
-                        Hexagon hexagon = new Hexagon(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
-                        logic.verificationPredecessor(hexagon, indicadorJugador);
-                        hexagonoActualizar = new Hexagon(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
+                        hexagonoActualizar = new HexagonCommunication(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
 
                         try {
                             Thread.sleep(100);

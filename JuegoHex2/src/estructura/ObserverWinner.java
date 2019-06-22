@@ -30,7 +30,7 @@ public class ObserverWinner {
     public void verifyWinPlayer(int indicadorJugador) {
 
         updateTree(indicadorJugador);
-        ArrayList<ComponentInterface> listCabezasVerification = new ArrayList<ComponentInterface>();
+        ArrayList<ComponentInterface> listCabezasVerification = new ArrayList<>();
 
         if (indicadorJugador == 1) {
 
@@ -90,7 +90,7 @@ public class ObserverWinner {
     }
 
     private void updateTree(int indicadorJugador) {
-        ArrayList<ComponentInterface> listHexagonsVerification = new ArrayList<ComponentInterface>();
+        ArrayList<ComponentInterface> listHexagonsVerification = new ArrayList<>();
 
         if (indicadorJugador == 1) {
 

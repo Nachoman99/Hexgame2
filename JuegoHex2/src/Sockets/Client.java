@@ -1,17 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Sockets;
 
 import GUI.Ingresar;
 import GUI.Registro;
-import GUI.Tablero;
 import GUI.Tablero2;
 import GUI.VentanaPrincipal;
 import GUI.WaitConnection;
 import Logic.Hexagon;
+import estructura.HexagonCommunication;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -36,7 +31,7 @@ public class Client {
     private boolean continuar = true;
     private WaitConnection wait = new WaitConnection(this);
     private boolean waiting = false;
-    int jugadorWinner = 0;
+    private int jugadorWinner = 0;
 
     public boolean isWaiting() {
         return waiting;
@@ -49,9 +44,6 @@ public class Client {
     public synchronized void runClient() {
         this.mainWindow = new VentanaPrincipal();
         mainWindow.setVisible(true);
-//        while (!waiting) {
-//            mostrarWaiting();
-//        }
         while (!waiting) {
             waiting = Ingresar.isTocaBoton();
             if (waiting == false) {
@@ -66,16 +58,12 @@ public class Client {
         try {
             connectToServer();
             getStreams();
-//            tablero.deshabilitar();
             wait.setVisible(false);
             tablero = new Tablero2(7, this);
             tablero.setVisible(true);
             while (continuar) {
-                //while (!Tablero.isSalir()) {
-                recibir();
-                //}
 
-//                System.out.println("Recibe cliente");
+                recibir();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -96,9 +84,8 @@ public class Client {
         }
     }
 
-    public void enviar(Hexagon hexa) throws IOException, ClassNotFoundException {
+    public void enviar(HexagonCommunication hexa) throws IOException, ClassNotFoundException {
         output.writeObject(hexa);
-        //output.writeBoolean(continuar);no se cooo mandarlo
         tablero.deshabilitar();
     }
 
@@ -109,14 +96,12 @@ public class Client {
 
                 if (jugadorWin == 1) {
                     jugadorWinner = 1;
-                    System.out.println("Hola");
                 } else {
-                    System.out.println("Hola2");
                     jugadorWinner = 2;
                 }
                 continuar = false;
             }
-            Hexagon hexa = (Hexagon) input.readObject();
+            HexagonCommunication hexa = (HexagonCommunication) input.readObject();
             if (hexa != null) {
                 tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
                 tablero.habilitar();
@@ -124,7 +109,6 @@ public class Client {
         } catch (SocketException e) {
             continuar = false;
             JOptionPane.showMessageDialog(null, "El jugador 1 a abandonado el juego");
-            //recibirSalio();
         }
 
     }
@@ -142,8 +126,6 @@ public class Client {
 
             if (client != null) {
                 System.out.println("Connected to: " + client.getInetAddress().getHostName());
-//                tablero = new Tablero2(7, this);
-//                tablero.setVisible(true);
                 conectado = true;
             }
         }
@@ -164,11 +146,11 @@ public class Client {
     private void closeConnection() {
 
         if (jugadorWinner == 1) {
-            JOptionPane.showMessageDialog(null, "C: Gano Jugador 1");
+            JOptionPane.showMessageDialog(null, "USTED HA PERDIDO");
         }
 
         if (jugadorWinner == 2) {
-            JOptionPane.showMessageDialog(null, "C: Gano Jugador 2");
+            JOptionPane.showMessageDialog(null, "USTED HA GANADO");
         }
 
         tablero.dispose();

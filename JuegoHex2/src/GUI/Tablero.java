@@ -9,6 +9,7 @@ import Logic.Hexagon;
 import Logic.Logic;
 import Sockets.LogicThread;
 import Sockets.Server;
+import estructura.HexagonCommunication;
 import estructura.HexagonalButton;
 import estructura.ObserverWinner;
 import java.awt.event.ActionEvent;
@@ -31,7 +32,7 @@ public class Tablero extends javax.swing.JFrame {
     private int indicadorJugador = 1;
     private int tamaño;
     Logic logic;
-    private static Hexagon hexagonoActualizar;
+    private static HexagonCommunication hexagonoActualizar;
     private LogicThread connector;
     private static boolean salir = false;
 
@@ -104,7 +105,7 @@ public class Tablero extends javax.swing.JFrame {
                         logic.addHexagonTreeJ1(hexagon);
                         clickedButton.setUso(true);
                         ObserverWinner.getInstance().verifyWinPlayer(indicadorJugador);
-                        hexagonoActualizar = new Hexagon(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
+                        hexagonoActualizar = new HexagonCommunication(indicadorJugador, clickedButton.getRow(), clickedButton.getCol());
 
                         try {
                             connector.enviar(hexagonoActualizar, ObserverWinner.getInstance().verifyFinishWin());

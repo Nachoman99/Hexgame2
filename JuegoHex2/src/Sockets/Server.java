@@ -28,22 +28,11 @@ public class Server {
 
     public synchronized void runServer() {
         try {
-//            Ingresar.setWaitingConnection(true);
-//            Registro.setWaitingConnection(true);
-//            this.principal = new VentanaPrincipal();
-//            principal.setVisible(true);
             server = new ServerSocket(PORT);
-//            while (true) {
-//                if (!ingresar && !registro) {
-//                    ingresar = Ingresar.getIniciarEspera();
-//                    registro = Registro.getIniciarEspera();
-//                } else {
-//                    
-
-//                }
-//            }
             new VentanaPrincipal().setVisible(true);
+            
             while (!waiting) {
+                
                 waiting = Ingresar.isTocaBoton();
                 if (waiting == false) {
                     waiting = Registro.isTocaBoton();

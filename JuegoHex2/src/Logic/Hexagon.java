@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  * @author cocau
  */
-public class Hexagon implements ComponentInterface, Serializable{
+public class Hexagon implements ComponentInterface, Serializable {
 
     private int player;
     private Punto location;

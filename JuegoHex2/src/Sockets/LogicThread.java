@@ -7,6 +7,7 @@ import GUI.Tablero2;
 import GUI.VentanaPrincipal;
 import GUI.WaitConnection;
 import Logic.Hexagon;
+import estructura.HexagonCommunication;
 import estructura.ObserverWinner;
 import java.awt.Point;
 import java.io.IOException;
@@ -42,25 +43,15 @@ public class LogicThread extends Thread {
     public LogicThread() {
     }
 
-//    public boolean isWaiting() {
-//        return waiting;
-//    }
-//
-//    public void setWaiting(boolean waiting) {
-//        this.waiting = waiting;
-//    }
     @Override
     public void run() {
 
         try {
-//            tablero.setVisible(true);
+
             getStreams();
-            //mostrarTablero();
             while (continuar) {
                 Thread.sleep(1000);
-                //while (!Tablero2.isSalir()) {
                 recibir();
-                // }
                 Thread.sleep(1000);
             }
         } catch (IOException e) {
@@ -68,46 +59,37 @@ public class LogicThread extends Thread {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         } catch (InterruptedException ex) {
-            Logger.getLogger(LogicThread.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } finally {
             closeConnection();
         }
 
     }
 
-    public Tablero getTablero() {
-        return tablero;
-    }
-    
     private void getStreams() throws IOException {
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
         input = new ObjectInputStream(connection.getInputStream());
     }
 
-    public synchronized void enviar(Hexagon hexa, int jugadorWin) throws IOException, ClassNotFoundException {
+    public synchronized void enviar(HexagonCommunication hexa, int jugadorWin) throws IOException, ClassNotFoundException {
         try {
             output.writeInt(jugadorWin);
             output.writeObject(hexa);
             tablero.deshabilitar();
 
             if (jugadorWin != 0) {
-                continuar = false;
-                try {
-                    sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
+                continuar = false;
             }
         } catch (SocketException e) {
-
+            e.printStackTrace();
         }
     }
 
     private void recibir() throws IOException, ClassNotFoundException {
         try {
-            Hexagon hexa = (Hexagon) input.readObject();
+            HexagonCommunication hexa = (HexagonCommunication) input.readObject();
             tablero.updateButtons(hexa.getPlayer(), hexa.getLocation().getX(), hexa.getLocation().getY());
             tablero.habilitar();
         } catch (SocketException e) {
@@ -126,16 +108,14 @@ public class LogicThread extends Thread {
 
     private void closeConnection() {
 
-        if (ObserverWinner.getInstance().verifyFinishWin() != 0) {
+        if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
 
-            if (ObserverWinner.getInstance().verifyFinishWin() == 1) {
+            JOptionPane.showMessageDialog(null, "USTED HA GANADO");
+        } else {
 
-                JOptionPane.showMessageDialog(null, "S: USTED HA GANADO");
-            } else {
-
-                JOptionPane.showMessageDialog(null, "S: USTED HA PERDIDO");
-            }
+            JOptionPane.showMessageDialog(null, "USTED HA PERDIDO");
         }
+
         tablero.dispose();
 
         System.out.println("\nClosing connection hilo");

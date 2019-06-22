@@ -49,7 +49,7 @@ public class Logic {
 
     public static void verificationPredecessor(ComponentInterface hegagonV, int indicadorJugador) {
 
-        ArrayList<ComponentInterface> listCabezasVerification = new ArrayList<ComponentInterface>();
+        ArrayList<ComponentInterface> listCabezasVerification = new ArrayList<>();
         Hexagon hexagonVerification = (Hexagon) hegagonV;
         Hexagon hexagonCabeza = null;
         boolean isCabeza = false;
